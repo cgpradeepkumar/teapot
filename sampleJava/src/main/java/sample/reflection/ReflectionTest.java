@@ -3,6 +3,8 @@ package sample.reflection;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -23,8 +25,24 @@ public class ReflectionTest {
                 System.out.println(field1);
             }
 
+            Calendar calendar = new GregorianCalendar();
+            testGetClass(calendar);
+
+            testDotClass();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void testGetClass(Object object) {
+        Class clazz = object.getClass();
+        System.out.println(clazz.getName());
+    }
+
+    private static void testDotClass(){
+        Class clazz = int.class;
+        Method method[] = clazz.getMethods();
+        System.out.println(clazz.getName());
+        System.out.println(clazz.isPrimitive());
     }
 }
