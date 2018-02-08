@@ -1,11 +1,11 @@
 package sample.reflection;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 /**
  * Created by pradeepkumar on 7/2/18.
@@ -29,7 +29,36 @@ public class ReflectionTest {
             testGetClass(calendar);
 
             testDotClass();
+
+            Class c = Class.forName("sample.reflection.Sample");
+            System.out.println(c.getName());
+
+            Sample sample = (Sample) c.newInstance();
+            sample.print();
+
+//            sample.message(); //impossible as it is private
+
+            // accessing private method of a class
+
+            Object object = c.newInstance();
+            Method privateMethod = c.getDeclaredMethod("message", null);
+            privateMethod.setAccessible(true);
+            privateMethod.invoke(object, null);
+
+            Constructor constructors[] = Sample.class.getDeclaredConstructors();
+            for (Constructor constructor : constructors) {
+                Sample sample1 = (Sample) constructor.newInstance();
+                sample1.print();
+            }
         } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }
     }
@@ -44,5 +73,16 @@ public class ReflectionTest {
         Method method[] = clazz.getMethods();
         System.out.println(clazz.getName());
         System.out.println(clazz.isPrimitive());
+    }
+}
+
+class Sample {
+
+    private void message() {
+        System.out.println("hello java");
+    }
+
+    public void print() {
+        System.out.println("testing....");
     }
 }
