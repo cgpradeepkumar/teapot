@@ -2,6 +2,7 @@ package in.library.controller;
 
 import in.library.services.db.LibraryDbServices;
 import in.library.services.mongodb.documents.Item;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ public class LibraryController {
     @Autowired
     LibraryDbServices libraryDbServices;
 
+    @ApiOperation(value = "List all items in the library")
     @RequestMapping(value = "/listAll", method = RequestMethod.GET)
     public ResponseEntity<List<Item>> listAll() {
 

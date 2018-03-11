@@ -16,4 +16,5 @@ public class ApplicationConfiguration {
         return new PropertySourcesPlaceholderConfigurer();
     }
 
+
 }
