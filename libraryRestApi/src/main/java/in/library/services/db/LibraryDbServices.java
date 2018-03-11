@@ -7,4 +7,6 @@ import java.util.List;
 public interface LibraryDbServices {
 
     List<Item> listAll();
+
+    void save(Item item);
 }

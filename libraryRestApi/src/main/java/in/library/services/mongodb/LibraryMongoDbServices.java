@@ -18,4 +18,10 @@ public class LibraryMongoDbServices implements LibraryDbServices {
     public List<Item> listAll() {
         return libraryRepository.findAll();
     }
+
+    @Override
+    public void save(Item item) {
+        libraryRepository.save(item);
+    }
+
 }
