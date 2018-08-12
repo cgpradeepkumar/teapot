@@ -1,0 +1,12 @@
+apply plugin: 'java-library'
+apply plugin: 'idea'
+apply plugin: 'java'
+
+
+dependencies {
+    compile 'org.elasticsearch.client:rest:5.4.3'
+}
+
+repositories {
+   mavenCentral()
+}
