@@ -9,4 +9,6 @@ public interface LibraryDbServices {
     List<Item> listAll();
 
     void save(Item item);
+    
+    void saveAll(List<Item> items);
 }

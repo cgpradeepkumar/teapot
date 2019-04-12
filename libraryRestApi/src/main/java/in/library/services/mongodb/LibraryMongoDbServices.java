@@ -23,5 +23,10 @@ public class LibraryMongoDbServices implements LibraryDbServices {
     public void save(Item item) {
         libraryRepository.save(item);
     }
+    
+    @Override
+    public void saveAll(List<Item> items) {
+    	libraryRepository.save(items);
+    }
 
 }

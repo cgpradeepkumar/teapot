@@ -2,6 +2,7 @@ package in.library.controller;
 
 import in.library.services.db.LibraryDbServices;
 import in.library.services.mongodb.documents.Item;
+import in.library.services.util.LibraryXlsFileParser;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,9 @@ public class LibraryController {
 
     @Autowired
     LibraryDbServices libraryDbServices;
+    
+    @Autowired
+    LibraryXlsFileParser fileParser;
 
     @ApiOperation(value = "List all items in the library")
     @RequestMapping(value = "/listAll", method = RequestMethod.GET)
@@ -40,5 +44,12 @@ public class LibraryController {
     public ResponseEntity<String> save(@RequestBody Item item) {
         libraryDbServices.save(item);
         return new ResponseEntity<>("Item saved successfully!", HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/bulkSave", method = RequestMethod.POST)
+    public ResponseEntity<Integer> bulkSave() {
+    	fileParser.parse();
+//    	libraryDbServices.saveAll(items);
+    	return new ResponseEntity<Integer>(HttpStatus.OK);
     }
 }
