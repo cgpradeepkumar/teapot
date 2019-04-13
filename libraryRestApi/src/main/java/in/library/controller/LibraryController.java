@@ -3,6 +3,8 @@ package in.library.controller;
 import in.library.services.db.LibraryDbServices;
 import in.library.services.mongodb.documents.Item;
 import in.library.services.util.LibraryXlsFileParser;
+import in.library.services.util.XlsToDocumentMapper;
+import in.library.services.util.model.Data;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,8 +50,9 @@ public class LibraryController {
     
     @RequestMapping(value = "/bulkSave", method = RequestMethod.POST)
     public ResponseEntity<Integer> bulkSave() {
-    	fileParser.parse();
-//    	libraryDbServices.saveAll(items);
-    	return new ResponseEntity<Integer>(HttpStatus.OK);
+    	List<Data> dataList = fileParser.parse();
+    	List<Item> items = XlsToDocumentMapper.map(dataList);
+    	libraryDbServices.saveAll(items);
+    	return new ResponseEntity<Integer>(items.size(), HttpStatus.OK);
     }
 }
