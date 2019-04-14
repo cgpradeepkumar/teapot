@@ -6,7 +6,7 @@ public class Data {
 	private String title;
 	private String author;
 	private String publisher;
-	private String price;
+	private double price;
 	private String language;
 
 	public int getId() {
@@ -41,11 +41,11 @@ public class Data {
 		this.publisher = publisher;
 	}
 
-	public String getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(String price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 

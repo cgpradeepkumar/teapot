@@ -16,7 +16,7 @@ public class XlsToDocumentMapper {
 			item.setTitle(data.getTitle());
 			item.setAuthor(data.getAuthor());
 			item.setPublisher(data.getPublisher());
-//			item.setPrice(data.getPrice());
+			item.setPrice(data.getPrice());
 			item.setLanguage(data.getLanguage());
 			items.add(item);
 		}

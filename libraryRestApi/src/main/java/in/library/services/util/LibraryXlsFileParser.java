@@ -75,7 +75,8 @@ public class LibraryXlsFileParser {
 						if (cell.getColumnIndex() == 4) {
 							//skip first row
 							if (!cellData.equals("Price")) {
-								data.setPrice(cellData);
+								String value = cellData.substring(2);
+								data.setPrice(Double.parseDouble(value));
 							}
 						}
 						if (cell.getColumnIndex() == 5) {
