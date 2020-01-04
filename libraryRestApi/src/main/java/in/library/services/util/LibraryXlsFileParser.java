@@ -93,7 +93,7 @@ public class LibraryXlsFileParser {
 						}
 					}
 				}
-				if (data.getId() != 0)
+				if (data.getId() != 0 && data.getTitle() != null && !data.getTitle().equals(""))
 					dataList.add(data);
 			}
 		} catch (FileNotFoundException e) {

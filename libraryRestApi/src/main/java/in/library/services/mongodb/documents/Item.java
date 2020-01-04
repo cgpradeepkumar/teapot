@@ -2,6 +2,7 @@ package in.library.services.mongodb.documents;
 
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
@@ -10,8 +11,11 @@ import java.io.Serializable;
 public class Item implements Serializable {
     private static final long serialVersionUID = 7364288828510799356L;
 
+    @Transient
+    public static final String SEQUENCE_NAME = "item";
+
     @Id
-    private String id;
+    private long id;
 
     private String title;
 
@@ -29,11 +33,11 @@ public class Item implements Serializable {
 
     private double price;
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -1,18 +1,18 @@
 package in.library.controller;
 
 import in.library.services.db.LibraryDbServices;
+import in.library.services.mongodb.SequenceGeneratorService;
 import in.library.services.mongodb.documents.Item;
 import in.library.services.util.LibraryXlsFileParser;
 import in.library.services.util.XlsToDocumentMapper;
 import in.library.services.util.model.Data;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,8 +21,11 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/library")
+//@RequestMapping("/library")
+@CrossOrigin(origins = "http://localhost:4200")
 public class LibraryController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LibraryController.class);
 
     @Autowired
     LibraryDbServices libraryDbServices;
@@ -30,8 +33,11 @@ public class LibraryController {
     @Autowired
     LibraryXlsFileParser fileParser;
 
+    @Autowired
+    SequenceGeneratorService sequenceGeneratorService;
+
     @ApiOperation(value = "List all items in the library")
-    @RequestMapping(value = "/listAll", method = RequestMethod.GET)
+    @GetMapping(value = "/library/items")
     public ResponseEntity<List<Item>> listAll() {
 
         List<Item> list = libraryDbServices.listAll();
@@ -42,16 +48,18 @@ public class LibraryController {
         return new ResponseEntity<List<Item>>(list, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ResponseEntity<String> save(@RequestBody Item item) {
+    @PostMapping(value = "/library/item")
+    public ResponseEntity<Item> save(@RequestBody Item item) {
+        LOGGER.info("New Item {}", item);
+        item.setId(sequenceGeneratorService.generateSequence(Item.SEQUENCE_NAME));
         libraryDbServices.save(item);
-        return new ResponseEntity<>("Item saved successfully!", HttpStatus.OK);
+        return new ResponseEntity<>(item, HttpStatus.OK);
     }
     
-    @RequestMapping(value = "/bulkSave", method = RequestMethod.POST)
+    @PostMapping(value = "/library/bulkSave")
     public ResponseEntity<Integer> bulkSave() {
     	List<Data> dataList = fileParser.parse();
-    	List<Item> items = XlsToDocumentMapper.map(dataList);
+    	List<Item> items = XlsToDocumentMapper.map(dataList, sequenceGeneratorService);
     	libraryDbServices.saveAll(items);
     	return new ResponseEntity<Integer>(items.size(), HttpStatus.OK);
     }
